@@ -1,2 +1,1 @@
-The projects directory should contain your onid (e.g., aburasa) folder.
-Do not use your student ID, please.
+This is my assignment-1 submission!
