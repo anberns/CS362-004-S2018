@@ -1,0 +1,127 @@
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:3
+        -:    0:Programs:1
+        -:    1:/* unittest1.c : tests fullDeckCount() */
+        -:    2:
+        -:    3:#include "dominion.h"
+        -:    4:#include <stdio.h>
+        -:    5:#include "rngs.h"
+        -:    6:#include <stdlib.h>
+        -:    7:
+        -:    8:#define TESTFN "fullDeckCount()"
+        -:    9:
+function main called 3 returned 0% blocks executed 2%
+        -:   10:int main (int argc, char** argv) {
+        -:   11:
+    #####:   12:    const int player1 = 1;
+    #####:   13:    const int player2 = 2;
+    #####:   14:    const int player3 = 3;
+    #####:   15:    const int player4 = 4;
+        -:   16:
+    #####:   17:    int passFlag = 1;
+        -:   18:    int i;
+    #####:   19:    int seed = 1000;
+    #####:   20:    int numPlayers = 2;
+    #####:   21:    int thisPlayer = 0;
+        -:   22:	struct gameState G, testG;
+        -:   23:    /*
+        -:   24:	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+        -:   25:			sea_hag, tribute, smithy, council_room};
+        -:   26:
+        -:   27:	// initialize a game state and player cards
+        -:   28:	initializeGame(numPlayers, k, seed, &G);
+        -:   29:    */
+        -:   30:
+    #####:   31:	printf("----------------- Testing Function: %s ----------------\n", TESTFN);
+        -:   32:
+        -:   33:	// ----------- TEST 1: All decks contain some of card  --------------
+    #####:   34:	printf("TEST 1: All three decks contain card \n");
+        -:   35:
+        -:   36:    // load G with test values
+    #####:   37:    G.deckCount[player1] = 10;
+    #####:   38:    for (i = 0; i < 5; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   39:        G.deck[player1][i] = estate;
+    #####:   40:    }
+    #####:   41:    for (i = 5; i < 10; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   42:        G.deck[player1][i] = copper;
+    #####:   43:    }
+    #####:   44:    G.handCount[player1] = 5;
+    #####:   45:    for (i = 0; i < 2; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   46:        G.hand[player1][i] = copper;
+    #####:   47:    }
+    #####:   48:    for (i = 2; i < 5; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   49:        G.hand[player1][i] = estate;
+    #####:   50:    }
+    #####:   51:    G.discardCount[player1] = 10;
+    #####:   52:    for (i = 0; i < 5; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   53:        G.discard[player1][i] = copper;
+    #####:   54:    }
+    #####:   55:    for (i = 5; i < 10; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   56:        G.discard[player1][i] = estate;
+    #####:   57:    }
+        -:   58:
+    #####:   59:    int count = fullDeckCount(1, estate, &G);
+    #####:   60:    if (count == 13) {
+branch  0 never executed
+branch  1 never executed
+    #####:   61:        printf("passed\n");
+    #####:   62:    } else {
+    #####:   63:        printf("failed\n");
+    #####:   64:        passFlag = 0;
+        -:   65:    }
+        -:   66:
+        -:   67:    // ----------- TEST 2: All decks do not contain card  --------------
+    #####:   68:	printf("TEST 2: All three decks do not contain card \n");
+        -:   69:
+    #####:   70:    count = fullDeckCount(1, province, &G);
+    #####:   71:    if (count == 0) {
+branch  0 never executed
+branch  1 never executed
+    #####:   72:        printf("passed\n");
+    #####:   73:    } else {
+    #####:   74:        printf("failed\n");
+    #####:   75:        passFlag = 0;
+        -:   76:    }
+        -:   77:
+        -:   78:    // ----------- TEST 3: Some decks contain card  --------------
+    #####:   79:	printf("TEST 3: Some decks contain card \n");
+        -:   80:
+        -:   81:    // load G with test values
+    #####:   82:    for (i = 5; i < 10; ++i) {
+branch  0 never executed
+branch  1 never executed
+    #####:   83:        G.discard[player1][i] = gold;
+    #####:   84:    }
+        -:   85:
+    #####:   86:    count = fullDeckCount(1, gold, &G);
+    #####:   87:    if (count == 5) {
+branch  0 never executed
+branch  1 never executed
+    #####:   88:        printf("passed\n");
+    #####:   89:    } else {
+    #####:   90:        printf("failed\n");
+    #####:   91:        passFlag = 0;
+        -:   92:    }
+        -:   93:
+    #####:   94:    if (passFlag) {
+branch  0 never executed
+branch  1 never executed
+    #####:   95:        printf("SUCCESS: all tests passed\n");
+    #####:   96:    }
+        -:   97:
+    #####:   98:  return 0;
+        -:   99:}
