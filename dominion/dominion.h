@@ -131,5 +131,6 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 // refactored functions
 void callAdventurer(struct gameState *state, int currentPlayer);
 void callSmithy(struct gameState *state, int currentPlayer, int handPos);
+void callMinion(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2);
 
 #endif
