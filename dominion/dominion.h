@@ -133,5 +133,6 @@ void callAdventurer(struct gameState *state, int currentPlayer);
 void callSmithy(struct gameState *state, int currentPlayer, int handPos);
 void callMinion(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2);
 void callBaron(struct gameState *state, int currentPlayer, int choice1); 
+void callStewad(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2, int choice3);
 
 #endif
