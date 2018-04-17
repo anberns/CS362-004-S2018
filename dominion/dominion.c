@@ -645,7 +645,7 @@ int getCost(int cardNumber)
 }
 
 void callAdventurer(struct gameState *state, int currentPlayer) {
-  int drawntreasure=0;
+  int drawntreasure; //bug
   int cardDrawn;
   int z = 0;
   int temphand[MAX_HAND];
@@ -673,7 +673,7 @@ void callAdventurer(struct gameState *state, int currentPlayer) {
 void callSmithy(struct gameState *state, int currentPlayer, int handPos) {
       //+3 Cards
      int i; 
-      for (i = 0; i < 3; i++)
+      for (i = 0; i <= 3; i++) //bug
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -725,7 +725,7 @@ void callMinion(struct gameState *state, int currentPlayer, int handPos, int cho
 		      //draw 4
 		      for (j = 0; j < 4; j++)
 			{
-			  drawCard(i, state);
+			  drawCard(j, state); // bug
 			}
 		    }
 		}
@@ -800,8 +800,8 @@ void callStewad(struct gameState *state, int currentPlayer, int handPos, int cho
       else
 	{
 	  //trash 2 cards in hand
-	  discardCard(choice2, currentPlayer, state, 1);
-	  discardCard(choice3, currentPlayer, state, 1);
+	  discardCard(choice2, currentPlayer, state, 0); //bug
+	  discardCard(choice3, currentPlayer, state, 0); //bug
 	}
 			
       //discard card from hand
