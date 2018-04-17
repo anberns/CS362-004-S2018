@@ -1,13 +1,13 @@
-/* unittest1.c : tests TestfullDeckCount() */
+/* unittest1.c : tests fullDeckCountTest() */
 
 #include "dominion.h"
 #include <stdio.h>
 #include "rngs.h"
 #include <stdlib.h>
 
-#define TESTFN "TestfullDeckCount()"
+#define TESTFN "fullDeckCountTest()"
 
-int TestfullDeckCount(int player, int card, struct gameState *state) {
+int fullDeckCountTest(int player, int card, struct gameState *state) {
   int i;
   int count = 0;
 
@@ -32,24 +32,11 @@ int TestfullDeckCount(int player, int card, struct gameState *state) {
 int main (int argc, char** argv) {
 
     const int player1 = 1;
-    const int player2 = 2;
-    const int player3 = 3;
-    const int player4 = 4;
 
     int passFlag = 1;
     int i;
-    int seed = 1000;
-    int numPlayers = 2;
-    int thisPlayer = 0;
-	struct gameState G, testG;
-    /*
-	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
-			sea_hag, tribute, smithy, council_room};
-
-	// initialize a game state and player cards
-	initializeGame(numPlayers, k, seed, &G);
-    */
-
+	struct gameState G;
+    
 	printf("----------------- Testing Function: %s ----------------\n", TESTFN);
 
 	// ----------- TEST 1: All decks contain some of card  --------------
@@ -78,7 +65,7 @@ int main (int argc, char** argv) {
         G.discard[player1][i] = estate;
     }
 
-    int count = TestfullDeckCount(1, estate, &G);
+    int count = fullDeckCountTest(1, estate, &G);
     if (count == 13) {
         printf("passed\n");
     } else {
@@ -89,7 +76,7 @@ int main (int argc, char** argv) {
     // ----------- TEST 2: All decks do not contain card  --------------
 	printf("TEST 2: All three decks do not contain card \n");
 
-    count = TestfullDeckCount(1, province, &G);
+    count = fullDeckCountTest(1, province, &G);
     if (count == 0) {
         printf("passed\n");
     } else {
@@ -97,16 +84,43 @@ int main (int argc, char** argv) {
         passFlag = 0;
     }
 
-    // ----------- TEST 3: Some decks contain card  --------------
-	printf("TEST 3: Some decks contain card \n");
+    // ----------- TEST 3: Lower boundary case ------------
+	printf("TEST 3: Lower boundary of all decks 0\n");
 
     // load G with test values
-    for (i = 5; i < 10; ++i) {
+    G.deckCount[player1] = 0;
+    G.handCount[player1] = 0;
+    G.discardCount[player1] = 0;
+
+    count = fullDeckCountTest(1, gold, &G);
+    if (count == 0) {
+        printf("passed\n");
+    } else {
+        printf("failed\n");
+        passFlag = 0;
+    }
+
+    // ----------- TEST 4: Upper boundary case ------------
+	printf("TEST 4: Upper boundary of all decks MAX_DECK gold\n");
+
+    // load G with test values
+    G.deckCount[player1] = MAX_DECK;
+    for (i = 0; i < MAX_DECK; ++i) {
+        G.deck[player1][i] = gold;
+    }
+
+    G.handCount[player1] = MAX_DECK;
+    for (i = 0; i < MAX_DECK; ++i) {
+        G.hand[player1][i] = gold;
+    }
+
+    G.discardCount[player1] = MAX_DECK;
+    for (i = 0; i < MAX_DECK; ++i) {
         G.discard[player1][i] = gold;
     }
 
-    count = TestfullDeckCount(1, gold, &G);
-    if (count == 5) {
+    count = fullDeckCountTest(1, gold, &G);
+    if (count == MAX_DECK * 3) {
         printf("passed\n");
     } else {
         printf("failed\n");
@@ -117,5 +131,5 @@ int main (int argc, char** argv) {
         printf("SUCCESS: all tests passed\n");
     }
 
-  return 0;
+    return 0;
 }

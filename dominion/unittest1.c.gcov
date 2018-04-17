@@ -3,48 +3,48 @@
         -:    0:Data:unittest1.gcda
         -:    0:Runs:1
         -:    0:Programs:1
-        -:    1:/* unittest1.c : tests TestfullDeckCount() */
+        -:    1:/* unittest1.c : tests fullDeckCountTest() */
         -:    2:
         -:    3:#include "dominion.h"
         -:    4:#include <stdio.h>
         -:    5:#include "rngs.h"
         -:    6:#include <stdlib.h>
         -:    7:
-        -:    8:#define TESTFN "TestfullDeckCount()"
+        -:    8:#define TESTFN "fullDeckCountTest()"
         -:    9:
-function TestfullDeckCount called 3 returned 100% blocks executed 100%
-        3:   10:int TestfullDeckCount(int player, int card, struct gameState *state) {
+function fullDeckCountTest called 4 returned 100% blocks executed 100%
+        4:   10:int fullDeckCountTest(int player, int card, struct gameState *state) {
         -:   11:  int i;
-        3:   12:  int count = 0;
+        4:   12:  int count = 0;
         -:   13:
-       33:   14:  for (i = 0; i < state->deckCount[player]; i++)
-branch  0 taken 91%
-branch  1 taken 9% (fallthrough)
+      224:   14:  for (i = 0; i < state->deckCount[player]; i++)
+branch  0 taken 98%
+branch  1 taken 2% (fallthrough)
         -:   15:    {
-       30:   16:      if (state->deck[player][i] == card) count++;
-branch  0 taken 17% (fallthrough)
-branch  1 taken 83%
+      220:   16:      if (state->deck[player][i] == card) count++;
+branch  0 taken 93% (fallthrough)
+branch  1 taken 7%
         -:   17:    }
         -:   18:
-       18:   19:  for (i = 0; i < state->handCount[player]; i++)
-branch  0 taken 83%
-branch  1 taken 17% (fallthrough)
+      214:   19:  for (i = 0; i < state->handCount[player]; i++)
+branch  0 taken 98%
+branch  1 taken 2% (fallthrough)
         -:   20:    {
-       15:   21:      if (state->hand[player][i] == card) count++;
-branch  0 taken 20% (fallthrough)
-branch  1 taken 80%
+      210:   21:      if (state->hand[player][i] == card) count++;
+branch  0 taken 97% (fallthrough)
+branch  1 taken 3%
         -:   22:    }
         -:   23:
-       33:   24:  for (i = 0; i < state->discardCount[player]; i++)
-branch  0 taken 91%
-branch  1 taken 9% (fallthrough)
+      224:   24:  for (i = 0; i < state->discardCount[player]; i++)
+branch  0 taken 98%
+branch  1 taken 2% (fallthrough)
         -:   25:    {
-       30:   26:      if (state->discard[player][i] == card) count++;
-branch  0 taken 33% (fallthrough)
-branch  1 taken 67%
+      220:   26:      if (state->discard[player][i] == card) count++;
+branch  0 taken 93% (fallthrough)
+branch  1 taken 7%
         -:   27:    }
         -:   28:
-        3:   29:  return count;
+        4:   29:  return count;
         -:   30:}
         -:   31:
 function main called 1 returned 100% blocks executed 86%
@@ -111,7 +111,7 @@ branch  1 taken 17% (fallthrough)
         5:   78:        G.discard[player1][i] = estate;
         -:   79:    }
         -:   80:
-        1:   81:    int count = TestfullDeckCount(1, estate, &G);
+        1:   81:    int count = fullDeckCountTest(1, estate, &G);
 call    0 returned 100%
         1:   82:    if (count == 13) {
 branch  0 taken 100% (fallthrough)
@@ -128,7 +128,7 @@ call    0 never executed
         1:   90:	printf("TEST 2: All three decks do not contain card \n");
 call    0 returned 100%
         -:   91:
-        1:   92:    count = TestfullDeckCount(1, province, &G);
+        1:   92:    count = fullDeckCountTest(1, province, &G);
 call    0 returned 100%
         1:   93:    if (count == 0) {
 branch  0 taken 100% (fallthrough)
@@ -141,20 +141,18 @@ call    0 never executed
     #####:   97:        passFlag = 0;
         -:   98:    }
         -:   99:
-        -:  100:    // ----------- TEST 3: Some decks contain card  --------------
-        1:  101:	printf("TEST 3: Some decks contain card \n");
+        -:  100:    // ----------- TEST 3: Lower boundary case ------------
+        1:  101:	printf("TEST 3: Lower boundary of all decks 0\n");
 call    0 returned 100%
         -:  102:
         -:  103:    // load G with test values
-        6:  104:    for (i = 5; i < 10; ++i) {
-branch  0 taken 83%
-branch  1 taken 17% (fallthrough)
-        5:  105:        G.discard[player1][i] = gold;
-        -:  106:    }
+        1:  104:    G.deckCount[player1] = 0;
+        1:  105:    G.handCount[player1] = 0;
+        1:  106:    G.discardCount[player1] = 0;
         -:  107:
-        1:  108:    count = TestfullDeckCount(1, gold, &G);
+        1:  108:    count = fullDeckCountTest(1, gold, &G);
 call    0 returned 100%
-        1:  109:    if (count == 5) {
+        1:  109:    if (count == 0) {
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         1:  110:        printf("passed\n");
@@ -165,12 +163,51 @@ call    0 never executed
     #####:  113:        passFlag = 0;
         -:  114:    }
         -:  115:
-        1:  116:    if (passFlag) {
+        -:  116:    // ----------- TEST 4: Upper boundary case ------------
+        1:  117:	printf("TEST 4: Upper boundary of all decks 200 gold\n");
+call    0 returned 100%
+        -:  118:
+        -:  119:    // load G with test values
+        1:  120:    G.deckCount[player1] = 200;
+      201:  121:    for (i = 0; i < 200; ++i) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+      200:  122:        G.deck[player1][i] = gold;
+        -:  123:    }
+        -:  124:
+        1:  125:    G.handCount[player1] = 200;
+      201:  126:    for (i = 0; i < 200; ++i) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+      200:  127:        G.hand[player1][i] = gold;
+        -:  128:    }
+        -:  129:
+        1:  130:    G.discardCount[player1] = 200;
+      201:  131:    for (i = 0; i < 200; ++i) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+      200:  132:        G.discard[player1][i] = gold;
+        -:  133:    }
+        -:  134:
+        1:  135:    count = fullDeckCountTest(1, gold, &G);
+call    0 returned 100%
+        1:  136:    if (count == 600) {
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-        1:  117:        printf("SUCCESS: all tests passed\n");
+        1:  137:        printf("passed\n");
 call    0 returned 100%
-        -:  118:    }
-        -:  119:
-        1:  120:  return 0;
-        -:  121:}
+        -:  138:    } else {
+    #####:  139:        printf("failed\n");
+call    0 never executed
+    #####:  140:        passFlag = 0;
+        -:  141:    }
+        -:  142:
+        1:  143:    if (passFlag) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  144:        printf("SUCCESS: all tests passed\n");
+call    0 returned 100%
+        -:  145:    }
+        -:  146:
+        1:  147:    return 0;
+        -:  148:}
