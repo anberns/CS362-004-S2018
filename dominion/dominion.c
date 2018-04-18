@@ -577,7 +577,6 @@ int drawCard(int player, struct gameState *state)
     state->deckCount[player]--;
     state->handCount[player]++;//Increment hand count
   }
-
   return 0;
 }
 
@@ -645,11 +644,11 @@ int getCost(int cardNumber)
 }
 
 void callAdventurer(struct gameState *state, int currentPlayer) {
-  int drawntreasure; //bug
+
+  int drawntreasure=0; //bug
   int cardDrawn;
   int z = 0;
   int temphand[MAX_HAND];
-
     while(drawntreasure<2){
         if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
           shuffle(currentPlayer, state);
