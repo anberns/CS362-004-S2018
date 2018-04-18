@@ -62,36 +62,7 @@ int main() {
     printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][1], gold);
     printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][2], province);
 
-   	/* ----------- TEST 2: Shuffle, treasure cards in hand, others discarded --------------
-	printf("TEST 2: Shuffle, treasure kept, others discarded\n");
-
-    // initialize a game state and player cards
-	initializeGame(numPlayers, k, seed, &G);
-    G.handCount[thisPlayer] = 0;
-
-    //set player deck to desired contents for testing
-    G.deckCount[thisPlayer] = 0;
-
-    //cardEffect(adventurer, choice1, choice2, choice3, &G, handpos, &bonus);
-    callAdventurer(&G, thisPlayer);
-    
-    // check hand, should have copper and silver
-    
-    if (G.hand[thisPlayer][0] != copper || G.hand[thisPlayer][1] != copper) {
-        passFlag = 0;
-    }
-	printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][0], copper);
-    printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][1], copper);
-
-    // check discard, should have estate and duchy
-    for (i = 0; i < G.discardCount[thisPlayer]; ++i) {
-        if (G.discard[thisPlayer][0] != estate) {
-            passFlag = 0;
-        }
-    }
-    */
-
-    if (passFlag) {
+   	if (passFlag) {
 	    printf("\n >>>>> SUCCESS: Testing complete %s <<<<<\n\n", TESTCARD);
     }
 

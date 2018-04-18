@@ -724,7 +724,7 @@ void callMinion(struct gameState *state, int currentPlayer, int handPos, int cho
 		      //draw 4
 		      for (j = 0; j < 4; j++)
 			{
-			  drawCard(j, state); // bug
+			  drawCard(i, state); // bug
 			}
 		    }
 		}
