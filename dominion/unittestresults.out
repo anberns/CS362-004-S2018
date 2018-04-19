@@ -1,3 +1,141 @@
+
+----------------- Testing Function: fullDeckCount() ----------------
+TEST 1: All three decks contain card 
+passed
+TEST 2: All three decks do not contain card 
+passed
+TEST 3: Lower boundary of all decks 0
+passed
+TEST 4: Upper boundary of all decks MAX_DECK gold
+passed
+SUCCESS: all tests passed
+
+----------------- Testing Function: isGameOver() ----------------
+TEST 1: Out of province cards
+passed
+TEST 2: Three card supplies at 0
+passed
+TEST 3: Boundary cases
+passed no supplies at 0
+passed two supplies at 0
+SUCCESS: all tests passed
+
+----------------- Testing Function: whoseTurn() ----------------
+TEST 1: Players 1-4
+passed
+passed
+passed
+passed
+TEST 2: Invalid players 0,5
+failed
+failed
+
+----------------- Testing Function: supplyCount() ----------------
+TEST 1: Returns correct count
+passed
+TEST 2: Catches negative and large positive card values
+failed negative value
+failed large positive value
+
+----------------- Testing Card: adventurer ----------------
+TEST 1: Treasure kept, others discarded
+hand card = 4, expected = 6
+hand card = 4, expected = 5
+discard card = 0, expected = 2
+discard card = 0, expected = 3
+
+Failed
+TEST 2: Shuffle, treasure kept, others discarded
+hand card = 4, expected = 4
+hand card = 4, expected = 4
+
+Passed
+
+----------------- Testing Card: Smithy ----------------
+TEST 1: Three cards added
+hand count = 4, expected = 3
+hand card = 5, expected = 2
+hand card = 6, expected = 6
+hand card = 3, expected = 3
+
+Failed
+
+----------------- Testing Card: Minion ----------------
+
+TEST 1: Add 1 action, discard 1, choice 1
+actions = 2, expected = 2
+coins = 6, expected = 6
+handCount = 0, expected = 0
+
+Passed
+
+TEST 2: Add 1 action, discard 1, choice 2, other player's hand > 4
+actions = 3, expected = 3
+handCount = 5, expected = 4
+player1 card 0 = 6, expected = 6
+player1 card 1 = 3, expected = 3
+player1 card 2 = 2, expected = 2
+player1 card 3 = 5, expected = 5
+player2 card 0 = 4, expected = 4
+player2 card 1 = -1, expected = 1
+player2 card 2 = -1, expected = 13
+player2 card 3 = -1, expected = 7
+
+Failed
+
+TEST 3: Add 1 action, discard 1, choice 2, other player's hand = 4
+actions = 4, expected = 4
+handCount = 4, expected = 4
+player1 card 0 = 6, expected = 6
+player1 card 1 = 3, expected = 3
+player1 card 2 = 2, expected = 2
+player1 card 3 = 5, expected = 5
+player2 card 0 = 6, expected = 6
+player2 card 1 = 3, expected = 3
+player2 card 2 = 5, expected = 5
+player2 card 3 = 1, expected = 1
+
+Passed
+
+TEST 4: Add 1 action, discard 1, neither choice
+actions = 5, expected = 5
+handCount = 4, expected = 4
+
+Passed
+
+----------------- Testing Card: Steward ----------------
+
+TEST 1: Add 2 cards to hand
+handCount = 3, expected = 3
+player1 card 0 = 2, expected = 2
+player1 card 1 = 3, expected = 3
+player1 card 2 = 1, expected = 1
+
+Passed
+
+TEST 2: Add 2 coins
+handCount = 4, expected = 4
+coins = 6, expected = 6
+player1 card 0 = 6, expected = 6
+player1 card 1 = 17, expected = 17
+player1 card 2 = 5, expected = 5
+player1 card 3 = 1, expected = 1
+
+Passed
+
+TEST 3: Discard 2 from hand
+handCount = 2, expected = 2
+player1 card 0 = 6, expected = 6
+player1 card 1 = 18, expected = 5
+
+Failed
+File 'dominion.c'
+Lines executed:33.51% of 564
+Branches executed:34.77% of 417
+Taken at least once:26.62% of 417
+Calls executed:28.42% of 95
+Creating 'dominion.c.gcov'
+
         -:    0:Source:dominion.c
         -:    0:Graph:dominion.gcno
         -:    0:Data:dominion.gcda

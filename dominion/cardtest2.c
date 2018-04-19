@@ -45,13 +45,12 @@ int main() {
     G.deck[thisPlayer][1] = silver;
     G.deck[thisPlayer][0] = province;
 
-	printf("----------------- Testing Card: %s ----------------\n", TESTCARD);
+	printf("\n----------------- Testing Card: %s ----------------\n", TESTCARD);
 
 	// ----------- TEST 1: Three cards added --------------
 	printf("TEST 1: Three cards added\n");
     
-    //cardEffect(smithy, choice1, choice2, choice3, &G, handpos, &bonus);
-    callSmithy(&G, thisPlayer, 0);
+    cardEffect(smithy, choice1, choice2, choice3, &G, handpos, &bonus);
 
     // check hand, should have gold, province, duchy
     if (G.hand[thisPlayer][0] != duchy || G.hand[thisPlayer][1] != gold || G.hand[thisPlayer][2] != province) {

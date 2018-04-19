@@ -47,13 +47,12 @@ int main() {
     G.deck[thisPlayer][1] = silver;
     G.deck[thisPlayer][0] = province;
 
-	printf("----------------- Testing Card: %s ----------------\n", TESTCARD);
+	printf("\n----------------- Testing Card: %s ----------------\n", TESTCARD);
 
 	// ----------- TEST 1: Treasure cards in hand, others discarded --------------
 	printf("TEST 1: Treasure kept, others discarded\n");
     
-    //cardEffect(adventurer, choice1, choice2, choice3, &G, handpos, &bonus);
-    callAdventurer(&G, thisPlayer);
+    cardEffect(adventurer, choice1, choice2, choice3, &G, handpos, &bonus);
     
     // check hand, should have copper and silver
     if (G.hand[thisPlayer][0] != gold || G.hand[thisPlayer][1] != silver) {
@@ -91,8 +90,7 @@ int main() {
     //set player deck to desired contents for testing
     G.deckCount[thisPlayer] = 0;
 
-    //cardEffect(adventurer, choice1, choice2, choice3, &G, handpos, &bonus);
-    callAdventurer(&G, thisPlayer);
+    cardEffect(adventurer, choice1, choice2, choice3, &G, handpos, &bonus);
     
     // check hand, should have copper and silver
     

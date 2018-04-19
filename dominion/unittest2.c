@@ -13,7 +13,7 @@ int main (int argc, char** argv) {
     int i;
 	struct gameState G;
     
-	printf("----------------- Testing Function: %s ----------------\n", TESTFN);
+	printf("\n----------------- Testing Function: %s ----------------\n", TESTFN);
 
 	// ----------- TEST 1: Out of province cards --------------
 	printf("TEST 1: Out of province cards\n");

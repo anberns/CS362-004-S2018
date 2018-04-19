@@ -50,7 +50,7 @@ int main() {
     G.deck[thisPlayer][1] = silver;
     G.deck[thisPlayer][0] = province;
 
-	printf("----------------- Testing Card: %s ----------------\n", TESTCARD);
+	printf("\n----------------- Testing Card: %s ----------------\n", TESTCARD);
 
 	// ----------- TEST 1: Add 1 action, discard 1, choice 1 --------------
 	printf("\nTEST 1: Add 1 action, discard 1, choice 1\n");
@@ -59,8 +59,7 @@ int main() {
     int numCoinsBefore = G.coins;
     choice1 = 1;
 
-    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
-    callMinion(&G, thisPlayer, handpos, choice1, choice2);
+    cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
 
     // check that state values are updated correctly
     if (G.numActions != numActionsBefore + 1 || G.coins != numCoinsBefore + 2 || G.handCount[thisPlayer] != 0) {
@@ -105,8 +104,7 @@ int main() {
     G.deck[anotherPlayer][6] = adventurer;
     G.deck[anotherPlayer][5] = province;
 
-    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
-    callMinion(&G, thisPlayer, handpos, choice1, choice2);
+    cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
     
     // check that state values are updated correctly
     if (G.numActions != numActionsBefore + 1 || G.handCount[thisPlayer] != 4) {
@@ -171,8 +169,7 @@ int main() {
     G.hand[anotherPlayer][2] = silver;   
     G.hand[anotherPlayer][3] = estate;   
 
-    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
-    callMinion(&G, thisPlayer, handpos, choice1, choice2);
+    cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
     
     // check that state values are updated correctly
     if (G.numActions != numActionsBefore + 1 || G.handCount[thisPlayer] != 4) {
@@ -219,8 +216,7 @@ int main() {
     G.deckCount[thisPlayer] = 5;
     G.handCount[thisPlayer] = 5;
 
-    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
-    callMinion(&G, thisPlayer, handpos, choice1, choice2);
+    cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
     
     // check that state values are updated correctly
     if (G.numActions != numActionsBefore + 1 || G.handCount[thisPlayer] != 4) {
