@@ -65,7 +65,9 @@ int main() {
    	if (passFlag) {
 	    printf("\n >>>>> SUCCESS: Testing complete %s <<<<<\n\n", TESTCARD);
     }
-
+    else {
+        printf("\nFailed\n");
+    }
 
 	return 0;
 }

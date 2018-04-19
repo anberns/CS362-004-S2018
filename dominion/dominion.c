@@ -645,7 +645,7 @@ int getCost(int cardNumber)
 
 void callAdventurer(struct gameState *state, int currentPlayer) {
 
-  int drawntreasure=0; //bug
+  int drawntreasure; //bug
   int cardDrawn;
   int z = 0;
   int temphand[MAX_HAND];
@@ -672,7 +672,7 @@ void callAdventurer(struct gameState *state, int currentPlayer) {
 void callSmithy(struct gameState *state, int currentPlayer, int handPos) {
       //+3 Cards
      int i; 
-      for (i = 0; i < 3; i++) //bug
+      for (i = 0; i <= 3; i++) //bug
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -724,7 +724,7 @@ void callMinion(struct gameState *state, int currentPlayer, int handPos, int cho
 		      //draw 4
 		      for (j = 0; j < 4; j++)
 			{
-			  drawCard(i, state); // bug
+			  drawCard(j, state); // bug
 			}
 		    }
 		}
@@ -784,7 +784,7 @@ void callBaron(struct gameState *state, int currentPlayer, int choice1) {
       }
 }
 
-void callStewad(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2, int choice3) {
+void callSteward(struct gameState *state, int currentPlayer, int handPos, int choice1, int choice2, int choice3) {
       if (choice1 == 1)
 	{
 	  //+2 cards
@@ -1010,7 +1010,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case steward:
-        callStewad(state, currentPlayer, handPos, choice1, choice2, choice3);
+        callSteward(state, currentPlayer, handPos, choice1, choice2, choice3);
       return 0;
 		
     case tribute:

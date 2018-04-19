@@ -16,7 +16,9 @@
 #define TESTCARD "adventurer"
 
 int main() {
-    int passFlag = 1;
+    int passFlagAll = 1;
+    int passFlag1 = 1;
+    int passFlag2 = 1;
     int newCards = 0;
     int discarded = 1;
     int xtraCoins = 0;
@@ -55,17 +57,27 @@ int main() {
     
     // check hand, should have copper and silver
     if (G.hand[thisPlayer][0] != gold || G.hand[thisPlayer][1] != silver) {
-        passFlag = 0;
+        passFlagAll = 0;
+        passFlag1 = 0;
     }
 	printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][0], gold);
     printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][1], silver);
 
     // check discard, should have estate and duchy
     if (G.discard[thisPlayer][0] != duchy || G.discard[thisPlayer][1] != province) {
-        passFlag = 0;
+        passFlagAll = 0;
+        passFlag1 = 0;
     }
 	printf("discard card = %d, expected = %d\n", G.discard[thisPlayer][0], duchy);
     printf("discard card = %d, expected = %d\n", G.discard[thisPlayer][1], province);
+
+    if (passFlag1) {
+        printf("\nPassed\n");
+    }
+    else {
+        printf("\nFailed\n");
+    }
+
 	// ----------- TEST 2: choice1 = 2 = +2 coins --------------
 	//printf("TEST 2: choice1 = 2 = +2 coins\n");
 
@@ -85,7 +97,8 @@ int main() {
     // check hand, should have copper and silver
     
     if (G.hand[thisPlayer][0] != copper || G.hand[thisPlayer][1] != copper) {
-        passFlag = 0;
+        passFlagAll = 0;
+        passFlag2 = 0;
     }
 	printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][0], copper);
     printf("hand card = %d, expected = %d\n", G.hand[thisPlayer][1], copper);
@@ -93,11 +106,19 @@ int main() {
     // check discard, should have estate and duchy
     for (i = 0; i < G.discardCount[thisPlayer]; ++i) {
         if (G.discard[thisPlayer][0] != estate) {
-            passFlag = 0;
+            passFlagAll = 0;
+            passFlag2 = 0;
         }
     }
 
-    if (passFlag) {
+    if (passFlag2) {
+        printf("\nPassed\n");
+    }
+    else {
+        printf("\nFailed\n");
+    }
+
+    if (passFlagAll) {
 	    printf("\n >>>>> SUCCESS: Testing complete %s <<<<<\n\n", TESTCARD);
     }
 

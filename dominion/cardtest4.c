@@ -1,16 +1,8 @@
 /*
- * cardtest4.c
+ * cardtest4.c : tests minion card
  *
  
  */
-
-/*
- * Include the following lines in your makefile:
- *
- * cardtest4: cardtest4.c dominion.o rngs.o
- *      gcc -o cardtest1 -g  cardtest4.c dominion.o rngs.o $(CFLAGS)
- */
-
 
 #include "dominion.h"
 #include "dominion_helpers.h"
@@ -20,9 +12,13 @@
 #include "rngs.h"
 #include <stdlib.h>
 
-#define TESTCARD "steward"
+#define TESTCARD "Minion"
 
 int main() {
+    int passFlagAll = 1;
+    int passFlag1 = 1;
+    int passFlag2 = 1;
+    int passFlag3 = 1;
     int newCards = 0;
     int discarded = 1;
     int xtraCoins = 0;
@@ -34,111 +30,187 @@ int main() {
     int seed = 1000;
     int numPlayers = 2;
     int thisPlayer = 0;
+    int anotherPlayer = 1;
 	struct gameState G, testG;
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
 
+
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &G);
 
+    //set player deck to desired contents for testing
+    G.handCount[thisPlayer] = 1;
+    G.hand[thisPlayer][0] = minion;
+    
+    G.deck[thisPlayer][4] = gold;
+    G.deck[thisPlayer][3] = province; 
+    G.deck[thisPlayer][2] = duchy;
+    G.deck[thisPlayer][1] = silver;
+    G.deck[thisPlayer][0] = province;
+
 	printf("----------------- Testing Card: %s ----------------\n", TESTCARD);
 
-	// ----------- TEST 1: choice1 = 1 = +2 cards --------------
-	printf("TEST 1: choice1 = 1 = +2 cards\n");
+	// ----------- TEST 1: Add 1 action, discard 1, choice 1 --------------
+	printf("\nTEST 1: Add 1 action, discard 1, choice 1\n");
+    
+    int numActionsBefore = G.numActions;
+    int numCoinsBefore = G.coins;
+    choice1 = 1;
 
-	// copy the game state to a test case
-	memcpy(&testG, &G, sizeof(struct gameState));
-	choice1 = 1;
-	cardEffect(steward, choice1, choice2, choice3, &testG, handpos, &bonus);
+    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
+    callMinion(&G, thisPlayer, handpos, choice1, choice2);
 
-	newCards = 2;
-	xtraCoins = 0;
-	printf("hand count = %d, expected = %d\n", testG.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
-	printf("deck count = %d, expected = %d\n", testG.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards + shuffledCards);
-	printf("coins = %d, expected = %d\n", testG.coins, G.coins + xtraCoins);
-	assert(testG.handCount[thisPlayer] == G.handCount[thisPlayer] + newCards - discarded);
-	assert(testG.deckCount[thisPlayer] == G.deckCount[thisPlayer] - newCards + shuffledCards);
-	assert(testG.coins == G.coins + xtraCoins);
+    // check that state values are updated correctly
+    if (G.numActions != numActionsBefore + 1 || G.coins != numCoinsBefore + 2 || G.handCount[thisPlayer] != 0) {
+        passFlagAll = 0;
+        passFlag1 = 0;
+    }
+	printf("actions = %d, expected = %d\n", G.numActions, numActionsBefore +1);
+	printf("coins = %d, expected = %d\n", G.coins, numCoinsBefore +2);
+	printf("handCount = %d, expected = %d\n", G.handCount[thisPlayer], 0);
 
-	// ----------- TEST 2: choice1 = 2 = +2 coins --------------
-	printf("TEST 2: choice1 = 2 = +2 coins\n");
+    if (passFlag1) {
+        printf("\nPassed\n");
+    }
+    else {
+        printf("\nFailed\n");
+    }
 
-	// copy the game state to a test case
-	memcpy(&testG, &G, sizeof(struct gameState));
-	choice1 = 2;
-	cardEffect(steward, choice1, choice2, choice3, &testG, handpos, &bonus);
+	// ----------- TEST 2: Add 1 action, discard 1, choice 2 --------------
+	printf("\nTEST 2: Add 1 action, discard 1, choice 2, other player's hand > 4\n");
 
-	newCards = 0;
-	xtraCoins = 2;
-	printf("hand count = %d, expected = %d\n", testG.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
-	printf("deck count = %d, expected = %d\n", testG.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards + shuffledCards);
-	printf("coins = %d, expected = %d\n", testG.coins, G.coins + xtraCoins);
-	assert(testG.handCount[thisPlayer] == G.handCount[thisPlayer] + newCards - discarded);
-	assert(testG.deckCount[thisPlayer] == G.deckCount[thisPlayer] - newCards + shuffledCards);
-	assert(testG.coins == G.coins + xtraCoins);
+    numActionsBefore = G.numActions;
+    choice1 = 0;
+    choice2 = 1;
+    handpos = 4;
+    G.handCount[thisPlayer] = 5;
+    G.hand[thisPlayer][0] = gold;   
+    G.hand[thisPlayer][1] = province;   
+    G.hand[thisPlayer][2] = silver;   
+    G.hand[thisPlayer][3] = estate;   
+    G.hand[thisPlayer][4] = minion;   
 
-	// ----------- TEST 3: choice1 = 3 = trash two cards --------------
+    // second player hand
+    G.handCount[anotherPlayer] = 5;
+    G.hand[anotherPlayer][0] = gold;   
+    G.hand[anotherPlayer][1] = province;   
+    G.hand[anotherPlayer][2] = silver;   
+    G.hand[anotherPlayer][3] = estate;   
+    G.hand[anotherPlayer][4] = copper;
+    G.deck[anotherPlayer][9] = copper;
+    G.deck[anotherPlayer][8] = estate; 
+    G.deck[anotherPlayer][7] = smithy;
+    G.deck[anotherPlayer][6] = adventurer;
+    G.deck[anotherPlayer][5] = province;
 
-	printf("TEST 3: choice1 = 3 = trash two cards\n");
-	choice1 = 3;
+    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
+    callMinion(&G, thisPlayer, handpos, choice1, choice2);
+    
+    // check that state values are updated correctly
+    if (G.numActions != numActionsBefore + 1 || G.handCount[thisPlayer] != 4) {
+        passFlagAll = 0;
+        passFlag2 = 0;
+    }
 
-	// cycle through each eligible combination of 2 cards to trash
-	for (i=1; i<G.handCount[thisPlayer]; i++) {
-		for (j=i+1; j<G.handCount[thisPlayer]; j++) {
+    // check that cards in hand are correct
+    if (G.hand[thisPlayer][0] != gold || G.hand[thisPlayer][1] != province || G.hand[thisPlayer][2] != duchy || G.hand[thisPlayer][3] != silver) {
+        passFlagAll = 0;
+        passFlag2 = 0;
+    }
 
-			G.hand[thisPlayer][0] = steward;
-			G.hand[thisPlayer][1] = copper;
-			G.hand[thisPlayer][2] = duchy;
-			G.hand[thisPlayer][3] = estate;
-			G.hand[thisPlayer][4] = feast;
+    if (G.hand[anotherPlayer][0] != copper || G.hand[anotherPlayer][1] != estate || G.hand[anotherPlayer][2] != smithy || G.hand[anotherPlayer][3] != adventurer) {
+        passFlagAll = 0;
+        passFlag2 = 0;
+    }
 
-			// copy the game state to a test case
-			memcpy(&testG, &G, sizeof(struct gameState));
 
-			printf("starting cards: ");
-			for (m=0; m<testG.handCount[thisPlayer]; m++) {
-				printf("(%d)", testG.hand[thisPlayer][m]);
-			}
-			printf("; ");
+	printf("actions = %d, expected = %d\n", G.numActions, numActionsBefore +1);
+	printf("handCount = %d, expected = %d\n", G.handCount[thisPlayer], 4);   
+	printf("player1 card 0 = %d, expected = %d\n", G.hand[thisPlayer][0], gold);   
+	printf("player1 card 1 = %d, expected = %d\n", G.hand[thisPlayer][1], province);   
+	printf("player1 card 2 = %d, expected = %d\n", G.hand[thisPlayer][2], duchy);   
+	printf("player1 card 3 = %d, expected = %d\n", G.hand[thisPlayer][3], silver);   
+	printf("player2 card 0 = %d, expected = %d\n", G.hand[anotherPlayer][0], copper);   
+	printf("player2 card 1 = %d, expected = %d\n", G.hand[anotherPlayer][1], estate);   
+	printf("player2 card 2 = %d, expected = %d\n", G.hand[anotherPlayer][2], smithy);   
+	printf("player2 card 3 = %d, expected = %d\n", G.hand[anotherPlayer][3], adventurer);   
 
-			choice2 = j;
-			choice3 = i;
-			remove1 = testG.hand[thisPlayer][i];
-			remove2 = testG.hand[thisPlayer][j];
-			cardEffect(steward, choice1, choice2, choice3, &testG, handpos, &bonus);
+    if (passFlag2) {
+        printf("\nPassed\n");
+    }
+    else {
+        printf("\nFailed\n");
+    }
+	// ----------- TEST 3: Add 1 action, discard 1, choice 2, other player's
+    // hand = 4 --------------
+	printf("\nTEST 3: Add 1 action, discard 1, choice 2, other player's hand = 4\n");
 
-			printf("removed: (%d)(%d); ", remove1, remove2);
-			printf("ending cards: ");
+    numActionsBefore = G.numActions;
+    choice1 = 0;
+    choice2 = 1;
+    handpos = 4;
+    G.deckCount[thisPlayer] = 5;
+    G.handCount[thisPlayer] = 5;
+    G.hand[thisPlayer][0] = gold;   
+    G.hand[thisPlayer][1] = province;   
+    G.hand[thisPlayer][2] = silver;   
+    G.hand[thisPlayer][3] = estate;   
+    G.hand[thisPlayer][4] = minion;   
+    G.deck[thisPlayer][4] = gold;
+    G.deck[thisPlayer][3] = province; 
+    G.deck[thisPlayer][2] = duchy;
+    G.deck[thisPlayer][1] = silver;
+    G.deck[thisPlayer][0] = province;
 
-			// tests that the removed cards are no longer in the player's hand
-			for (m=0; m<testG.handCount[thisPlayer]; m++) {
-				printf("(%d)", testG.hand[thisPlayer][m]);
-				assert(testG.hand[thisPlayer][m] != remove1);
-				assert(testG.hand[thisPlayer][m] != remove2);
-			}
-			printf(", expected: ");
-			for (m=1; m<G.handCount[thisPlayer]; m++) {
-				if (G.hand[thisPlayer][m] != G.hand[thisPlayer][i] && G.hand[thisPlayer][m] != G.hand[thisPlayer][j]) {
-					printf("(%d)", G.hand[thisPlayer][m]);
-				}
-			}
-			printf("\n");
+    // second player hand
+    G.handCount[anotherPlayer] = 4;
+    G.hand[anotherPlayer][0] = gold;   
+    G.hand[anotherPlayer][1] = province;   
+    G.hand[anotherPlayer][2] = silver;   
+    G.hand[anotherPlayer][3] = estate;   
 
-			// tests for the appropriate number of remaining cards
-			newCards = 0;
-			xtraCoins = 0;
-			discarded = 3;
-			if (i==1 && j==2) {
-				printf("hand count = %d, expected = %d\n", testG.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
-				printf("deck count = %d, expected = %d\n", testG.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards + shuffledCards);
-			}
-			assert(testG.handCount[thisPlayer] == G.handCount[thisPlayer] + newCards - discarded);
-			assert(testG.deckCount[thisPlayer] == G.deckCount[thisPlayer] - newCards + shuffledCards);
-		}
+    //cardEffect(minion, choice1, choice2, choice3, &G, handpos, &bonus);
+    callMinion(&G, thisPlayer, handpos, choice1, choice2);
+    
+    // check that state values are updated correctly
+    if (G.numActions != numActionsBefore + 1 || G.handCount[thisPlayer] != 4) {
+        passFlagAll = 0;
+        passFlag3 = 0;
+    }
 
-	}
+    // check that cards in hand are correct
+    if (G.hand[thisPlayer][0] != gold || G.hand[thisPlayer][1] != province || G.hand[thisPlayer][2] != duchy || G.hand[thisPlayer][3] != silver) {
+        passFlagAll = 0;
+        passFlag3 = 0;
+    }
 
-	printf("\n >>>>> SUCCESS: Testing complete %s <<<<<\n\n", TESTCARD);
+    if (G.hand[anotherPlayer][0] != gold || G.hand[anotherPlayer][1] != province || G.hand[anotherPlayer][2] != silver || G.hand[anotherPlayer][3] != estate) {
+        passFlagAll = 0;
+        passFlag3 = 0;
+    }
+
+	printf("actions = %d, expected = %d\n", G.numActions, numActionsBefore +1);
+	printf("handCount = %d, expected = %d\n", G.handCount[thisPlayer], 4);   
+	printf("player1 card 0 = %d, expected = %d\n", G.hand[thisPlayer][0], gold);   
+	printf("player1 card 1 = %d, expected = %d\n", G.hand[thisPlayer][1], province);   
+	printf("player1 card 2 = %d, expected = %d\n", G.hand[thisPlayer][2], duchy);   
+	printf("player1 card 3 = %d, expected = %d\n", G.hand[thisPlayer][3], silver);   
+	printf("player2 card 0 = %d, expected = %d\n", G.hand[anotherPlayer][0], gold);   
+	printf("player2 card 1 = %d, expected = %d\n", G.hand[anotherPlayer][1], province);   
+	printf("player2 card 2 = %d, expected = %d\n", G.hand[anotherPlayer][2], silver);   
+	printf("player2 card 3 = %d, expected = %d\n", G.hand[anotherPlayer][3], estate);   
+
+    if (passFlag3) {
+        printf("\nPassed\n");
+    }
+    else {
+        printf("\nFailed\n");
+    }
+
+    if (passFlagAll) {
+	    printf("\n >>>>> SUCCESS: Testing complete %s <<<<<\n\n", TESTCARD);
+    }
 
 
 	return 0;
