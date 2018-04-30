@@ -18,7 +18,7 @@ int checkAdventurer(int p, struct gameState *post) {
     struct gameState pre;
     memcpy (&pre, post, sizeof(struct gameState));
 
-    playAdventurer(post, p);
+    callAdventurer(post, p);
 
     // things that adventurer changes
     // last two cards should be treasure cards
