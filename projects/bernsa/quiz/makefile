@@ -1,2 +1,2 @@
 testme: testme.c
-	gcc testme.c -o testme
+	gcc -o testme testme.c -coverage -fpic -lm

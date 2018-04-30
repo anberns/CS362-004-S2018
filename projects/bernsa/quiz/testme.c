@@ -19,10 +19,16 @@ char *inputString()
 {
     // create 5 char string of random lowercase chars
     char *randomString;
-    randomString = malloc(6 * sizeof(char));
-    memset(randomString, '\0', 6);
-    for (int i = 0; i < 5; ++i) {
-        randomString[i] = ((rand() % (122 + 1 - 97) + 97));
+    randomString = malloc(10 * sizeof(char));
+    memset(randomString, '\0', 10);
+    char *choices = "rest";
+    for (int i = 0; i < 9; ++i) {
+
+        // uncomment line below to test 'r', 'e', 's', 't' only
+        randomString[i] = choices[((rand() % (4 + 1 - 0) + 0))];
+
+        // uncomment line below to test chars from ' ' to '}'
+        //randomString[i] = ((rand() % (125 + 1 - 32) + 32));
     }
     return randomString;
 }
@@ -55,6 +61,7 @@ void testme()
        && state == 9)
     {
       printf("error ");
+      free(s);
       exit(200);
     }
     free(s);
@@ -66,9 +73,5 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
     testme();
-    //char *s = inputString();
-    //printf("%s", s); 
-    //printf("\n");
-    //free(s);
     return 0;
 }

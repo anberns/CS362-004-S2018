@@ -1,0 +1,148 @@
+        -:    0:Source:testme.c
+        -:    0:Graph:testme.gcno
+        -:    0:Data:testme.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* Random Testing Quiz
+        -:    2: * Aaron Berns, bernsa
+        -:    3: */
+        -:    4:
+        -:    5:#include<stdio.h>
+        -:    6:#include<string.h>
+        -:    7:#include<stdlib.h>
+        -:    8:#include<time.h>
+        -:    9:
+function inputChar called 32851 returned 100% blocks executed 100%
+    32851:   10:char inputChar()
+        -:   11:{
+        -:   12:    // get random number between 32 and 125 inclusive for ascii character
+        -:   13:    // rand () call help from stack overflow #1202687
+        -:   14:
+    32851:   15:    return (char)(rand() % (125 + 1 - 32) + 32);
+call    0 returned 100%
+        -:   16:}
+        -:   17:
+function inputString called 32851 returned 100% blocks executed 100%
+    32851:   18:char *inputString()
+        -:   19:{
+        -:   20:    // create 5 char string of random lowercase chars
+        -:   21:    char *randomString;
+    32851:   22:    randomString = malloc(10 * sizeof(char));
+    32851:   23:    memset(randomString, '\0', 10);
+    32851:   24:    char *choices = "rest";
+   328510:   25:    for (int i = 0; i < 9; ++i) {
+branch  0 taken 90%
+branch  1 taken 10% (fallthrough)
+        -:   26:
+        -:   27:        // uncomment line below to test 'r', 'e', 's', 't' only
+   295659:   28:        randomString[i] = choices[((rand() % (4 + 1 - 0) + 0))];
+call    0 returned 100%
+        -:   29:
+        -:   30:        // uncomment line below to test chars from ' ' to '}'
+        -:   31:        //randomString[i] = ((rand() % (125 + 1 - 32) + 32));
+        -:   32:    }
+    32851:   33:    return randomString;
+        -:   34:}
+        -:   35:
+function testme called 1 returned 0% blocks executed 100%
+        1:   36:void testme()
+        -:   37:{
+        1:   38:  int tcCount = 0;
+        -:   39:  char *s;
+        -:   40:  char c;
+        1:   41:  int state = 0;
+        -:   42:  while (1)
+        -:   43:  {
+    65701:   44:    tcCount++;
+    32851:   45:    c = inputChar();
+call    0 returned 100%
+    32851:   46:    s = inputString();
+call    0 returned 100%
+    32851:   47:    printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
+call    0 returned 100%
+        -:   48:
+    32851:   49:    if (c == '[' && state == 0) state = 1;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   50:    if (c == '(' && state == 1) state = 2;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   51:    if (c == '{' && state == 2) state = 3;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   52:    if (c == ' '&& state == 3) state = 4;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   53:    if (c == 'a' && state == 4) state = 5;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   54:    if (c == 'x' && state == 5) state = 6;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   55:    if (c == '}' && state == 6) state = 7;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   56:    if (c == ')' && state == 7) state = 8;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   57:    if (c == ']' && state == 8) state = 9;
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 99%
+    32851:   58:    if (s[0] == 'r' && s[1] == 'e'
+branch  0 taken 20% (fallthrough)
+branch  1 taken 80%
+branch  2 taken 20% (fallthrough)
+branch  3 taken 80%
+     1326:   59:       && s[2] == 's' && s[3] == 'e'
+branch  0 taken 21% (fallthrough)
+branch  1 taken 79%
+branch  2 taken 19% (fallthrough)
+branch  3 taken 81%
+       53:   60:       && s[4] == 't' && s[5] == '\0'
+branch  0 taken 17% (fallthrough)
+branch  1 taken 83%
+branch  2 taken 11% (fallthrough)
+branch  3 taken 89%
+        1:   61:       && state == 9)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        -:   62:    {
+        1:   63:      printf("error ");
+call    0 returned 100%
+        1:   64:      free(s);
+        1:   65:      exit(200);
+call    0 returned 0%
+        -:   66:    }
+    32850:   67:    free(s);
+        -:   68:  }
+        -:   69:}
+        -:   70:
+        -:   71:
+function main called 1 returned 0% blocks executed 80%
+        1:   72:int main(int argc, char *argv[])
+        -:   73:{
+        1:   74:    srand(time(NULL));
+call    0 returned 100%
+call    1 returned 100%
+        1:   75:    testme();
+call    0 returned 0%
+    #####:   76:    return 0;
+        -:   77:}
