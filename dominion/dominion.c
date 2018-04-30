@@ -644,7 +644,7 @@ int getCost(int cardNumber)
 }
 
 void playAdventurer(struct gameState *state, int currentPlayer) {
-    int drawntreasure;
+    int drawntreasure = 0;
     int cardDrawn;
     int temphand[MAX_HAND];
     int z=0;
