@@ -55,10 +55,13 @@ void checkAdventurer(int p, struct gameState *post) {
     Adventurer(post, p);
 
 
-    // things that adventurer changes
-    // last two cards should be treasure cards
+    // last two cards in hand should be treasure cards
     assert (post->hand[p][post->handCount[p]-1] == copper || post->hand[p][post->handCount[p]-1] == silver || post->hand[p][post->handCount[p]-1] == gold);
     assert (post->hand[p][post->handCount[p]-2] == copper || post->hand[p][post->handCount[p]-2] == silver || post->hand[p][post->handCount[p]-2] == gold);
+
+    // deck = change in discard pile - 2 treasure cards
+    printf("postDeck: %d, preDeck: %d, postDis: %d, preDis: %d\n", post->deckCount[p], pre.deckCount[p], post->discardCount[p], pre.discardCount[p]);
+    assert (post->deckCount[p] == pre.deckCount[p] - (post->discardCount[p] - pre.discardCount[p]) - 2);
 
 
 /*
@@ -98,14 +101,14 @@ int main () {
   //SelectStream(2);
   //PutSeed(3);
 
-  for (n = 0; n < 2000; n++) {
+  for (n = 0; n < 20000; n++) {
     for (i = 0; i < sizeof(struct gameState); i++) {
       ((char*)&G)[i] = ((rand() % (256 + 1 - 0) + 0));
     }
     p = ((rand() % (3 + 1 - 0) + 0));
-    G.deckCount[p] = ((rand() % (MAX_DECK + 1 - 10) + 10));
-    G.discardCount[p] = ((rand() % (MAX_DECK + 1 - 0) + 0));
-    G.handCount[p] = ((rand() % (MAX_HAND + 1 - 0) + 0));
+    G.deckCount[p] = ((rand() % (MAX_DECK + 1 - 11) + 11));
+    G.discardCount[p] = ((rand() % (100 + 1 - 11) + 11));
+    G.handCount[p] = ((rand() % (MAX_HAND - 0) + 0));
     for (i = 0; i < G.handCount[p]; ++i) {
         G.hand[p][i] = ((rand() % (24 + 1 - 0) + 0));
     }
