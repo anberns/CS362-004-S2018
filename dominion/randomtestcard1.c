@@ -6,24 +6,60 @@
 #include "dominion_helpers.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 #include "rngs.h"
-#include <math.h>
 
 #define DEBUG 0
 #define NOISY_TEST 1
 
-int checkAdventurer(int p, struct gameState *post) {
-    printf("in check function\n");
+void Adventurer(struct gameState *state, int currentPlayer) {
+
+  int drawntreasure = 0; //bug
+  int cardDrawn;
+  int z = 0;
+  int temphand[MAX_HAND];
+  
+    while(drawntreasure<2){
+        printf("drawntreasure: %d, cardDrawn: %d, z: %d\n",  drawntreasure, cardDrawn, z);
+
+        if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+          shuffle(currentPlayer, state);
+        }
+
+        drawCard(currentPlayer, state);
+        cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+        if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold) {
+          drawntreasure++;
+        }
+        else{
+          temphand[z]=cardDrawn;
+          state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+          z++;
+        }
+      }
+
+      while(z-1>=0){
+	    state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+	    z=z-1;
+      }
+        printf("\n");
+}
+
+void checkAdventurer(int p, struct gameState *post) {
     struct gameState pre;
+
     memcpy (&pre, post, sizeof(struct gameState));
 
-    callAdventurer(post, p);
+    Adventurer(post, p);
+
 
     // things that adventurer changes
     // last two cards should be treasure cards
     assert (post->hand[p][post->handCount[p]-1] == copper || post->hand[p][post->handCount[p]-1] == silver || post->hand[p][post->handCount[p]-1] == gold);
-    assert (post->hand[p][post->handCount[p]-2] == copper || post->hand[p][post->handCount[p]-1] == silver || post->hand[p][post->handCount[p]-2] == gold);
+    assert (post->hand[p][post->handCount[p]-2] == copper || post->hand[p][post->handCount[p]-2] == silver || post->hand[p][post->handCount[p]-2] == gold);
+
 
 /*
   if (pre.deckCount[p] > 0) {
@@ -58,18 +94,39 @@ int main () {
 
   printf ("RANDOM TESTS.\n");
 
-  SelectStream(2);
-  PutSeed(3);
+  srand(time(NULL));
+  //SelectStream(2);
+  //PutSeed(3);
 
   for (n = 0; n < 2000; n++) {
     for (i = 0; i < sizeof(struct gameState); i++) {
-      ((char*)&G)[i] = floor(Random() * 256);
+      ((char*)&G)[i] = ((rand() % (256 + 1 - 0) + 0));
     }
-    p = floor(Random() * 2);
-    G.deckCount[p] = floor(Random() * MAX_DECK);
-    G.discardCount[p] = floor(Random() * MAX_DECK);
-    G.handCount[p] = floor(Random() * MAX_HAND);
+    p = ((rand() % (3 + 1 - 0) + 0));
+    G.deckCount[p] = ((rand() % (MAX_DECK + 1 - 10) + 10));
+    G.discardCount[p] = ((rand() % (MAX_DECK + 1 - 0) + 0));
+    G.handCount[p] = ((rand() % (MAX_HAND + 1 - 0) + 0));
+    for (i = 0; i < G.handCount[p]; ++i) {
+        G.hand[p][i] = ((rand() % (24 + 1 - 0) + 0));
+    }
+    for (i = 0; i < G.deckCount[p]; ++i) {
+        G.deck[p][i] = ((rand() % (24 + 1 - 0) + 0));
+    }
+    
+
+    // ensure at least 3 treasure cards in deck
+    int count = 0;
+    int randomIndex;
+    while (count < 3) {
+        randomIndex = ((rand() % (G.deckCount[p] + 1 - 0) + 0));
+        if (G.deck[p][randomIndex] != copper || G.deck[p][randomIndex] != silver || G.deck[p][randomIndex] != gold) {
+            G.deck[p][randomIndex] = copper;
+            count++;
+        }
+    }
+
     checkAdventurer(p, &G);
+    printf("END OF TEST %d\n", n);
   }
 
   printf ("ALL TESTS OK\n");
