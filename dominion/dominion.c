@@ -672,7 +672,7 @@ void callAdventurer(struct gameState *state, int currentPlayer) {
 void callSmithy(struct gameState *state, int currentPlayer, int handPos) {
       //+3 Cards
      int i; 
-      for (i = 0; i <= 3; i++) //bug
+      for (i = 0; i < 3; i++) //for bug change to i <=3
 	{
 	  drawCard(currentPlayer, state);
 	}
