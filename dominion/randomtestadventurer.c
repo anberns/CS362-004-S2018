@@ -23,12 +23,18 @@ void checkAdventurer(int p, struct gameState *post) {
 
 
     // last two cards in hand should be treasure cards
-    assert (post->hand[p][post->handCount[p]-1] == copper || post->hand[p][post->handCount[p]-1] == silver || post->hand[p][post->handCount[p]-1] == gold);
-    assert (post->hand[p][post->handCount[p]-2] == copper || post->hand[p][post->handCount[p]-2] == silver || post->hand[p][post->handCount[p]-2] == gold);
+    if (!(post->hand[p][post->handCount[p]-1] == copper || post->hand[p][post->handCount[p]-1] == silver || post->hand[p][post->handCount[p]-1] == gold)){
+        printf("Last card is treasure FAILED\n");
+    }
+
+    if (!(post->hand[p][post->handCount[p]-2] == copper || post->hand[p][post->handCount[p]-2] == silver || post->hand[p][post->handCount[p]-2] == gold)){
+        printf("Second to last card is treasure FAILED\n");
+    }
 
     // post deck should equal change in discard pile - 2 treasure cards
-    assert (post->deckCount[p] == pre.deckCount[p] - (post->discardCount[p] - pre.discardCount[p]) - 2);
-
+    if (!(post->deckCount[p] == pre.deckCount[p] - (post->discardCount[p] - pre.discardCount[p]) - 2)){
+        printf("Overall deck changes FAILED\n");
+    }
 }
 
 int main () {
@@ -91,7 +97,7 @@ int main () {
         checkAdventurer(p, &G);
     }
 
-  printf ("ALL TESTS OK\n");
+  printf ("ALL TESTS FINISHED\n");
 
   return 0;
 }

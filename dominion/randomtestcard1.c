@@ -22,14 +22,19 @@ void checkSmithy(int p, struct gameState *post, int handPos) {
     callSmithy(post, p, handPos);
 
     // deck should have three less cards
-    assert (post->deckCount[p] == pre.deckCount[p] - 3);
+    if (!(post->deckCount[p] == pre.deckCount[p] - 3)){
+        printf("Deck loses 3 cards FAILED\n");
+    }
 
     // hand should have two more cards (draw 3 - discard smithy)
-    assert (post->handCount[p] == pre.handCount[p] + 2);
+    if (!(post->handCount[p] == pre.handCount[p] + 2)){
+        printf("Hand gains 2 cards FAILED\n");
+    }
 
     // Smithy card should have been discarded
-    assert (post->hand[p][handPos] != smithy);
-
+    if (!(post->hand[p][handPos] != smithy)){
+        printf("Smithy discarded FAILED\n");
+    }
 }
 
 int main () {
@@ -65,7 +70,7 @@ int main () {
     checkSmithy(p, &G, randomIndex);
   }
 
-  printf ("ALL TESTS OK\n");
+  printf ("ALL TESTS FINISHED\n");
 
   return 0;
 }

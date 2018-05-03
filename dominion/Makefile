@@ -42,6 +42,24 @@ randomtestcard2: randomtestcard2.c dominion.o rngs.o
 randomtestadventurer: randomtestadventurer.c dominion.o rngs.o
 	gcc -o randomtestadventurer randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
 
+# compile, run and generate test results
+randomtestcard1.out: randomtestcard1 dominion.o
+	./randomtestcard1 > randomtestcard1.out
+	gcov dominion.c -b >> randomtestcard1.out
+	cat dominion.c.gcov >> randomtestcard1.out
+
+randomtestcard2.out: randomtestcard2 dominion.o
+	./randomtestcard2 > randomtestcard2.out
+	gcov dominion.c -b >> randomtestcard2.out
+	cat dominion.c.gcov >> randomtestcard2.out
+
+randomtestadventurer.out: randomtestadventurer dominion.o
+	./randomtestadventurer > randomtestadventurer.out
+	gcov dominion.c -b >> randomtestadventurer.out
+	cat dominion.c.gcov >> randomtestadventurer.out
+	
+randomTestAll: randomtestcard1.out randomtestcard2.out randomtestadventurer.out
+
 all: playdom player 
 
 clean:

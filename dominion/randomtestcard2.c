@@ -23,22 +23,31 @@ void checkSteward(int p, struct gameState *post, int handPos, int choice1, int c
 
     // if choice1 = 1, deck should have two less cards
     if (choice1 == 1) {
-        assert (post->deckCount[p] == pre.deckCount[p] - 2);
+        if (!(post->deckCount[p] == pre.deckCount[p] - 2)){
+            printf("Choice1 = 1: Deck loses 2 cards FAILED\n");
+        }
     }
 
     // choice1 = 2, coins increase by two
     else if (choice1 == 2) {
-        assert (post->coins == pre.coins + 2);
+        if (!(post->coins == pre.coins + 2)){
+            printf("Choice1 = 2: 2 coins added FAILED\n");
+        }
     }
 
     // three cards discarded from hand
     else {
-        assert(post->handCount[p] == pre.handCount[p] - 3);
+        if (!(post->handCount[p] == pre.handCount[p] - 3)){
+            printf("Choice1 = 3: 3 cards discarded FAILED\n");
+        }
+ 
     }
 
     // only Steward is kept, other two trashed if choice1 != 1 or 2
-    assert(post->playedCardCount == pre.playedCardCount + 1);
-
+    if (!(post->playedCardCount == pre.playedCardCount + 1)){
+        printf("Steward kept, if others, trashed FAILED\n");
+    }
+ 
     int i, countpre = 0; 
     int countpost = 0;
     for (i = 0; i < post->handCount[p]; ++i) {
@@ -63,7 +72,9 @@ void checkSteward(int p, struct gameState *post, int handPos, int choice1, int c
     
     // can be triggered by bug in discardCard() which can change index of steward
     // card before it is discarded
-    assert(countpost == countpre -1);
+    if (!(countpost == countpre - 1)){
+        printf("Steward kept part 2 FAILED\n");
+    }
 }
 
 int main () {
@@ -116,7 +127,7 @@ int main () {
     checkSteward(p, &G, randomIndex, choice1, choice2, choice3);
   }
 
-  printf ("ALL TESTS OK\n");
+  printf ("ALL TESTS FINISHED\n");
 
   return 0;
 }
