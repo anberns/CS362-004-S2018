@@ -799,8 +799,8 @@ void callSteward(struct gameState *state, int currentPlayer, int handPos, int ch
       else
 	{
 	  //trash 2 cards in hand
-	  discardCard(choice2, currentPlayer, state, 0); //bug
-	  discardCard(choice3, currentPlayer, state, 0); //bug
+	  discardCard(choice2, currentPlayer, state, 1); //for bug set to 0
+	  discardCard(choice3, currentPlayer, state, 1); //for bug set to 0
 	}
 			
       //discard card from hand
@@ -1252,7 +1252,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
-	
+    int i;	
+
   //if card is not trashed, added to Played pile 
   if (trashFlag < 1)
     {
@@ -1269,6 +1270,7 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
     {
       //reduce number of cards in hand
       state->handCount[currentPlayer]--;
+      
     }
   else if ( state->handCount[currentPlayer] == 1 ) //only one card in hand
     {
@@ -1284,7 +1286,7 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       //reduce number of cards in hand
       state->handCount[currentPlayer]--;
     }
-	
+
   return 0;
 }
 
