@@ -19,7 +19,7 @@ void checkAdventurer(int p, struct gameState *post) {
 
     memcpy (&pre, post, sizeof(struct gameState));
 
-    callAdventurer(post, p);
+    adventurerCard(0, post, 0, 0, p);
 
 
     // last two cards in hand should be treasure cards
@@ -32,6 +32,7 @@ void checkAdventurer(int p, struct gameState *post) {
     }
 
     // post deck should equal change in discard pile - 2 treasure cards
+    printf("post->deckCount: %d, pre->deckCount: %d, post-discardCount: %d, pre.discardCount: %d\n", post->deckCount[p], pre.deckCount[p], post->discardCount[p], pre.discardCount[p]);
     if (!(post->deckCount[p] == pre.deckCount[p] - (post->discardCount[p] - pre.discardCount[p]) - 2)){
         printf("Overall deck changes FAILED\n");
     }

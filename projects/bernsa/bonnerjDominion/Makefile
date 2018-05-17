@@ -1,4 +1,4 @@
-CFLAGS = -Wall -fpic -coverage -lm
+CFLAGS = -Wall -fpic -coverage -lm 
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -34,13 +34,13 @@ player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 randomtestcard1: randomtestcard1.c dominion.o rngs.o
-	gcc -o randomtestcard1 randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	gcc -o randomtestcard1 randomtestcard1.c dominion.o rngs.o $(CFLAGS) -g
 
 randomtestcard2: randomtestcard2.c dominion.o rngs.o
-	gcc -o randomtestcard2 randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	gcc -o randomtestcard2 randomtestcard2.c dominion.o rngs.o $(CFLAGS) -g
 
 randomtestadventurer: randomtestadventurer.c dominion.o rngs.o
-	gcc -o randomtestadventurer randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+	gcc -o randomtestadventurer randomtestadventurer.c dominion.o rngs.o $(CFLAGS) -g
 
 # compile, run and generate test results
 randomtestcard1.out: randomtestcard1 dominion.o

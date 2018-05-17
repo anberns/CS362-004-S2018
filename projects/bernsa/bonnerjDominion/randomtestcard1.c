@@ -19,7 +19,7 @@ void checkSmithy(int p, struct gameState *post, int handPos) {
 
     memcpy (&pre, post, sizeof(struct gameState));
 
-    callSmithy(post, p, handPos);
+    smithyCard(post, p, handPos);
 
     // deck should have three less cards
     if (!(post->deckCount[p] == pre.deckCount[p] - 3)){
