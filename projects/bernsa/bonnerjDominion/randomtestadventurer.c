@@ -32,7 +32,10 @@ void checkAdventurer(int p, struct gameState *post) {
     }
 
     // post deck should equal change in discard pile - 2 treasure cards
-    printf("post->deckCount: %d, pre->deckCount: %d, post-discardCount: %d, pre.discardCount: %d\n", post->deckCount[p], pre.deckCount[p], post->discardCount[p], pre.discardCount[p]);
+
+    // trace statement used in initial debugging
+    //printf("post->deckCount: %d, pre->deckCount: %d, post-discardCount: %d, pre.discardCount: %d\n", post->deckCount[p], pre.deckCount[p], post->discardCount[p], pre.discardCount[p]);
+
     if (!(post->deckCount[p] == pre.deckCount[p] - (post->discardCount[p] - pre.discardCount[p]) - 2)){
         printf("Overall deck changes FAILED\n");
     }
