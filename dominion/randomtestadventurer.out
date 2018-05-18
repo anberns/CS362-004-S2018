@@ -1,3 +1,13 @@
+Testing playAdventurer.
+RANDOM TESTS.
+ALL TESTS FINISHED
+File 'dominion.c'
+Lines executed:14.38% of 612
+Branches executed:10.07% of 417
+Taken at least once:9.35% of 417
+Calls executed:12.63% of 95
+Creating 'dominion.c.gcov'
+
         -:    0:Source:dominion.c
         -:    0:Graph:dominion.gcno
         -:    0:Data:dominion.gcda
